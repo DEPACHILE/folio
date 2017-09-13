@@ -15,7 +15,7 @@ def checkTui(request, user_id, election_id, tui_number):
         try:
             q = Voter.objects.get(nroTui=tui_number)
         except ObjectDoesNotExist:
-            return HttpResponse(content_type='application/json',status=404,data={}        )
+            return HttpResponse(content_type='application/json',status=404)
         data = serializers.serialize('json', [q])
         tmp = json.loads(data)
         data = json.dumps(tmp[0]['fields'])
