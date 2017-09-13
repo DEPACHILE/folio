@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 from django.http import HttpResponse
 from django.core import serializers
 from .models import Voter, Election, Vote
@@ -10,7 +8,10 @@ import json
 def checkTui(request, user_id, election_id, tui_number):
     query = Vote.objects.filter(voter__nroTui = tui_number)
     if not query:
-        q = Voter.objects.get(nroTui = tui_number)
+        try:
+            q = Voter.objects.get(nroTui=tui_number)
+        except ObjectDoesNotExist:
+            return HttpResponseBadRequest()
         data = serializers.serialize('json', [q])
         tmp = json.loads(data)
         data = json.dumps(tmp[0]['fields'])
